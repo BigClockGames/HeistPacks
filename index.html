@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HeistPacks</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-container">
+    <nav class="main-nav">
+      <div class="nav-tabs">
+        <button onclick="showCollection()" class="tab-btn" data-label="COLLECTION">
+          <span class="tab-icon">📚</span>
+          <span class="tab-text">COLLECTION</span>
+        </button>
+        <button onclick="showHeistSetup()" class="tab-btn" data-label="HEIST">
+          <span class="tab-icon">💰</span>
+          <span class="tab-text">HEIST</span>
+        </button>
+        <button onclick="showPackSelection()" class="tab-btn" data-label="PACKS">
+          <span class="tab-icon">🎴</span>
+          <span class="tab-text">PACKS</span>
+        </button>
+        <button onclick="showBlackMarket()" class="tab-btn" data-label="BLACK MARKET" id="black-market-tab" style="display: none;">
+          <span class="tab-icon">🦹</span>
+          <span class="tab-text">BLACK MARKET</span>
+        </button>
+        <button onclick="showHome()" class="tab-btn" data-label="HOME">
+          <span class="tab-icon">🏠</span>
+          <span class="tab-text">HOME</span>
+        </button>
+        <button onclick="showHelp()" class="tab-btn" data-label="HELP">
+          <span class="tab-icon">❓</span>
+          <span class="tab-text">HELP</span>
+        </button>
+        <button onclick="showSettings()" class="tab-btn" data-label="SETTINGS">
+          <span class="tab-icon">⚙️</span>
+          <span class="tab-text">SETTINGS</span>
+        </button>
+      </div>
+      <div class="hud-stats">
+        <div id="xp-display"></div>
+        <div id="cash">$0</div>
+        <div id="drugs" style="display: none">💊 0</div>
+        <div id="cigs" style="display: none">🚬 0</div>
+      </div>
+    </nav>
+
+    <div id="gameArea"></div>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h2 id="modal-title"></h2>
+        <p id="modal-text"></p>
+        <div id="modal-buttons"></div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
