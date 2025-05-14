@@ -975,8 +975,7 @@ body.font-size-large .tab-text {
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  ```text
-font-size: 14px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -1963,8 +1962,7 @@ font-size: 14px;
   font-style: italic;
 }
 
-.achievement-notification {
-  position: fixed;
+.achievement-notification {  position: fixed;
   bottom: 20px;
   right: 20px;
   background: rgba(0, 0, 0, 0.9);
@@ -2209,5 +2207,20 @@ font-size: 14px;
   font-size: 24px;
 }
 
-s ease;
+.heist-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  width: 100%;
 }
+
+.repeat-button {
+  background: linear-gradient(45deg, #333, #444);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3
