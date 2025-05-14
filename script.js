@@ -1664,7 +1664,15 @@ async function openPack(packType = 'classic') {
   const drawnCards = [];
   const gameArea = document.getElementById('gameArea');
 
-  gameArea.innerHTML = '<div class="pack-opening"><div class="horizontal-layout"></div></div>';
+  gameArea.innerHTML = `
+    <div class="pack-opening">
+      <div class="pack-buttons">
+        <button class="open-another-btn" onclick="openPack('${packType}')">🎴 Open Another Pack</button>
+        <button class="continue-btn" onclick="showPackSelection()">← Back to Packs</button>
+      </div>
+      <div class="horizontal-layout"></div>
+    </div>
+  `;
   const horizontalLayout = gameArea.querySelector('.horizontal-layout');
 
   for (const category of CATEGORIES) {
@@ -1677,20 +1685,13 @@ async function openPack(packType = 'classic') {
 
     // Create card element
     const cardElement = document.createElement('div');
-    cardElement.className = `card card-back ${packType === 'drug' ? 'drug-pack' : packType === 'prison' ? 'prison-pack' : ''}`;
+    cardElement.className = `card card-${card.rarity.toLowerCase()} card-reveal`;
     if (isNewCard) {
       cardElement.dataset.isNew = 'true';
     }
-    cardElement.innerHTML = '?';
-    horizontalLayout.appendChild(cardElement);
-
-    // Add click handler for reveal
-    cardElement.onclick = () => {
-      if (cardElement.classList.contains('card-back')) {
-        cardElement.style.transform = 'rotateY(0deg)';
-        cardElement.className = `card card-${card.rarity.toLowerCase()}`;
-        cardElement.innerHTML = `
-      ${cardElement.dataset.isNew ? '<div class="new-badge">NEW!</div>' : ''}
+    setTimeout(() => cardElement.classList.add('revealed'), 100);
+    cardElement.innerHTML = `
+      ${isNewCard ? '<div class="new-badge">NEW!</div>' : ''}
       <div class="expansion-tag">${card.id.startsWith('D') ? 'Drug' : card.id.startsWith('P') ? 'Prison Break' : 'Classic'}</div>
       <div class="card-id">#${card.id.startsWith('D') || card.id.startsWith('P') ? card.id.substring(2) : card.id.substring(1)}</div>
       <div class="card-name">${card.name}</div>
@@ -1703,43 +1704,16 @@ async function openPack(packType = 'classic') {
       </div>
       <div class="card-flavor">${getFlavor(card)}</div>
     `;
-        cardElement.onclick = null;
-      }
-    };
+    horizontalLayout.appendChild(cardElement);
   }
 
   saveGame();
   updateUI();
 
-  // Add buttons after all cards are revealed
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  const buttonContainer = document.createElement('div');
-  buttonContainer.className = 'pack-buttons';
-
-  const openAnotherBtn = document.createElement('button');
-  openAnotherBtn.textContent = '🎴 Open Another Pack';
-  openAnotherBtn.className = 'open-another-btn';
-  openAnotherBtn.onclick = () => {
-    if (gameState.cash >= PACKS[packType].price) {
-      openPack(packType);
-    } else {
-      alert("Not enough cash!");
-    }
-  };
-
-  const continueBtn = document.createElement('button');
-  continueBtn.textContent = '← Back to Packs';
-  continueBtn.className = 'continue-btn';
-  continueBtn.onclick = () => {
-    showPackSelection();
-    if (!gameState.tutorialComplete && gameState.collection.length === 3) {
-      showTutorial();
-    }
-  };
-
-  buttonContainer.appendChild(openAnotherBtn);
-  buttonContainer.appendChild(continueBtn);
-  horizontalLayout.after(buttonContainer);
+  // Check for tutorial after pack opening
+  if (!gameState.tutorialComplete && gameState.collection.length === 3) {
+    showTutorial();
+  }
 }
 
 // Attempt heist
@@ -2642,6 +2616,25 @@ function showHelp() {
   `;
   setActiveTab('HELP');
   showHelpSection('basics');
+}
+
+function showSupport() {
+  const gameArea = document.getElementById('gameArea');
+  gameArea.innerHTML = `
+    <div class="support-page">
+      <h1>Support the Developer</h1>
+      <div class="support-content">
+        <p>If you're enjoying HeistPacks and want to support its development, consider making a donation!</p>
+        <div class="donation-links">
+          <a href="https://ko-fi.com/bigclockgames" class="donation-button" target="_blank">
+            <span class="donation-icon">☕</span>
+            Support on Ko-fi
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+  setActiveTab('SUPPORT');
 }
 
 function showHelpSection(section) {

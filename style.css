@@ -520,11 +520,15 @@ body.font-size-large .tab-text {
   max-width: 1000px;
 }
 
-.pack-opening .card {
+.pack-opening .card-reveal {
   position: relative;
   transform-style: preserve-3d;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transform: rotateY(180deg);
+}
+
+.pack-opening .card-reveal.revealed {
+  transform: rotateY(0deg);
 }
 
 .pack-buttons {
@@ -2145,4 +2149,65 @@ font-size: 14px;
 .completion-badge {
   color: #4CAF50;
   font-size: 24px;
+}
+
+.support-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.support-page h1 {
+  color: #ff69b4;
+  font-size: 36px;
+  margin-bottom: 30px;
+  text-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+}
+
+.support-content {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  padding: 30px;
+  border: 2px solid #ff69b4;
+}
+
+.support-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.donation-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.donation-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.donation-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+}
+
+.donation-icon {
+  font-size: 24px;
+}
+
+s ease;
 }
