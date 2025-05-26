@@ -1,4 +1,90 @@
-import { openPack as openPackOriginal, RARITY_CONFIG } from './js/packs.js';
+
+// Remove import and make everything work with vanilla JS
+const RARITY_CONFIG = {
+  common: { name: 'Common', color: '#8D8D8D', weight: 80 },
+  rare: { name: 'Rare', color: '#4A90E2', weight: 13 },
+  epic: { name: 'Epic', color: '#9B59B6', weight: 5 },
+  legendary: { name: 'Legendary', color: '#F39C12', weight: 1.5 },
+  mythic: { name: 'Mythic', color: '#E74C3C', weight: 0.4 },
+  unique: { name: 'Unique', color: '#FFD700', weight: 0.1 }
+};
+
+// Classic card sets
+const CLASSIC_CARD_SETS = {
+  classic: {
+    name: "Classic Set",
+    description: "The original survivor pack set",
+    items: {
+      common: ["First Aid Kit", "Canned Food", "Bottled Water", "Scrap Metal"],
+      rare: ["Medical Supplies", "Survival Ration", "Purified Water", "Tool Set"],
+      epic: ["Advanced Medkit", "Emergency Food", "Water Filter", "Material Cache"],
+      legendary: ["Miracle Drug", "Nutrient Paste", "Endless Spring", "Unobtanium"],
+      mythic: [],
+      unique: []
+    },
+    survivors: {
+      common: [
+        { name: 'Sarah Chen', occupation: 'Doctor', str: 4, dex: 6, int: 8, health: 100 },
+        { name: 'Jackson Williams', occupation: 'Engineer', str: 7, dex: 5, int: 6, health: 100 },
+        { name: 'Emily Davis', occupation: 'Teacher', str: 5, dex: 7, int: 7, health: 100 },
+        { name: 'David Rodriguez', occupation: 'Farmer', str: 8, dex: 4, int: 5, health: 100 }
+      ],
+      rare: [
+        { name: 'Olivia Brown', occupation: 'Nurse', str: 4, dex: 6, int: 8, health: 100 },
+        { name: 'Ethan Garcia', occupation: 'Electrician', str: 7, dex: 5, int: 6, health: 100 },
+        { name: 'Sophia Martinez', occupation: 'Librarian', str: 5, dex: 7, int: 7, health: 100 },
+        { name: 'Noah Anderson', occupation: 'Construction Worker', str: 8, dex: 4, int: 5, health: 100 }
+      ],
+      epic: [
+        { name: 'Isabella Thomas', occupation: 'Paramedic', str: 5, dex: 7, int: 9, health: 100 },
+        { name: 'Liam Jackson', occupation: 'Mechanic', str: 8, dex: 5, int: 6, health: 100 },
+        { name: 'Mia White', occupation: 'Journalist', str: 6, dex: 8, int: 8, health: 100 },
+        { name: 'Aiden Harris', occupation: 'Security Guard', str: 9, dex: 5, int: 6, health: 100 }
+      ],
+      legendary: [
+        { name: 'Abigail Martin', occupation: 'Scientist', str: 5, dex: 7, int: 9, health: 100 },
+        { name: 'Carter Thompson', occupation: 'Detective', str: 8, dex: 6, int: 7, health: 100 },
+        { name: 'Chloe Garcia', occupation: 'Chef', str: 6, dex: 8, int: 8, health: 100 },
+        { name: 'James Wilson', occupation: 'Firefighter', str: 9, dex: 5, int: 6, health: 100 }
+      ],
+      mythic: [
+        { name: 'Madison Moore', occupation: 'Astronaut', str: 6, dex: 8, int: 10, health: 100 },
+        { name: 'Lucas Taylor', occupation: 'Pilot', str: 9, dex: 7, int: 8, health: 100 },
+        { name: 'Ella Anderson', occupation: 'President', str: 7, dex: 9, int: 9, health: 100 },
+        { name: 'Owen Wright', occupation: 'General', str: 10, dex: 6, int: 7, health: 100 }
+      ],
+      unique: [
+        { name: 'Scarlett Green', occupation: 'God', str: 10, dex: 10, int: 10, health: 100 }
+      ]
+    },
+    locations: {
+      common: [
+        { name: 'Abandoned Hospital', requirements: { ep: 5, food: 3, water: 3 }, rewards: { meds: 15, scraps: 10 } },
+        { name: 'Desolate Supermarket', requirements: { ep: 5, food: 2, water: 2 }, rewards: { food: 20, water: 15 } },
+        { name: 'Ruined Factory', requirements: { ep: 6, food: 3, water: 3 }, rewards: { scraps: 20, materials: 10 } }
+      ],
+      rare: [
+        { name: 'Hidden Clinic', requirements: { ep: 8, food: 4, water: 4 }, rewards: { meds: 30, scraps: 15 } },
+        { name: 'Fortified Farm', requirements: { ep: 8, food: 3, water: 5 }, rewards: { food: 35, water: 25 } },
+        { name: 'Secret Workshop', requirements: { ep: 9, food: 4, water: 4 }, rewards: { scraps: 30, materials: 20 } }
+      ],
+      epic: [
+        { name: 'Underground Lab', requirements: { ep: 12, food: 6, water: 6 }, rewards: { meds: 50, scraps: 25, materials: 15 } },
+        { name: 'Secluded Oasis', requirements: { ep: 12, food: 5, water: 8 }, rewards: { food: 40, water: 60, scraps: 20 } }
+      ],
+      legendary: [
+        { name: 'Government Bunker', requirements: { ep: 15, food: 8, water: 8 }, rewards: { meds: 75, food: 50, water: 50, scraps: 40, materials: 30 } }
+      ],
+      mythic: [
+        { name: 'Atlantis', requirements: { ep: 20, food: 10, water: 10 }, rewards: { meds: 100, food: 100, water: 100, scraps: 60, materials: 50 } }
+      ],
+      unique: []
+    }
+  }
+};
+
+// Initialize global CARD_SETS with classic set
+window.CARD_SETS = CLASSIC_CARD_SETS;
 
 const defaultGameState = {
   resources: {
@@ -14,14 +100,25 @@ const defaultGameState = {
     fontFamily: 'Segoe UI',
     musicEnabled: true,
     musicVolume: 50
+  },
+  importedExpansions: [],
+  gridHealth: Array(25).fill(100),
+  gridMaxHealth: Array(25).fill(100),
+  baseSettings: {
+    coreHealth: 100,
+    maxCoreHealth: 100,
+    outermostDamage: 10,
+    outermostStartingHealth: 100
   }
 };
 
 // Create and configure audio element
 const backgroundMusic = new Audio('Untitled.mp3');
 backgroundMusic.loop = true;
-backgroundMusic.volume = 0.5; // Set default volume to 50%
+backgroundMusic.volume = 0.5;
 backgroundMusic.autoplay = true;
+
+let gameState = { ...defaultGameState };
 
 // Add event listener for user interaction
 document.addEventListener('click', () => {
@@ -30,10 +127,133 @@ document.addEventListener('click', () => {
   }
 }, { once: true });
 
-export const gameState = { ...defaultGameState };
-
-export function saveGame() {
+function saveGame() {
   localStorage.setItem('survivorPacksGame', JSON.stringify(gameState));
+}
+
+function openPack(cardCount = 3, setName = 'classic') {
+  if (gameState.resources.scraps < 10) {
+    throw new Error('Not enough scraps to open pack');
+  }
+
+  const cardSet = window.CARD_SETS[setName];
+  if (!cardSet) {
+    throw new Error(`Card set "${setName}" not found`);
+  }
+
+  const pulled = [];
+  const weightedCategories = [];
+  
+  // Build weighted category array
+  for (let i = 0; i < 60; i++) weightedCategories.push('survivors');
+  for (let i = 0; i < 30; i++) weightedCategories.push('items');
+  for (let i = 0; i < 10; i++) weightedCategories.push('locations');
+
+  for (let i = 0; i < cardCount; i++) {
+    // Determine rarity
+    let rarityRoll = Math.random() * 100;
+    let rarity = 'common';
+    
+    const rarityThresholds = [
+      { name: 'unique', threshold: RARITY_CONFIG.unique.weight },
+      { name: 'mythic', threshold: RARITY_CONFIG.mythic.weight },
+      { name: 'legendary', threshold: RARITY_CONFIG.legendary.weight },
+      { name: 'epic', threshold: RARITY_CONFIG.epic.weight },
+      { name: 'rare', threshold: RARITY_CONFIG.rare.weight }
+    ];
+
+    for (const rarityData of rarityThresholds) {
+      if (rarityRoll <= rarityData.threshold) {
+        rarity = rarityData.name;
+        break;
+      }
+      rarityRoll -= rarityData.threshold;
+    }
+
+    // Determine category
+    const category = weightedCategories[Math.floor(Math.random() * weightedCategories.length)];
+    
+    let card = null;
+    
+    if (category === 'survivors') {
+      const availableSurvivors = cardSet.survivors[rarity] || [];
+      if (availableSurvivors.length > 0) {
+        const survivorData = availableSurvivors[Math.floor(Math.random() * availableSurvivors.length)];
+        card = {
+          id: generateUniqueId(),
+          name: survivorData.name,
+          occupation: survivorData.occupation,
+          category: 'survivors',
+          rarity: rarity,
+          color: RARITY_CONFIG[rarity].color,
+          stats: {
+            health: survivorData.health,
+            str: survivorData.str,
+            dex: survivorData.dex,
+            int: survivorData.int,
+            ep: survivorData.str + survivorData.dex + survivorData.int
+          }
+        };
+      }
+    } else if (category === 'items') {
+      const availableItems = cardSet.items[rarity] || [];
+      if (availableItems.length > 0) {
+        const itemName = availableItems[Math.floor(Math.random() * availableItems.length)];
+        const itemValues = {
+          'First Aid Kit': { type: 'meds', value: 10 },
+          'Canned Food': { type: 'food', value: 10 },
+          'Bottled Water': { type: 'water', value: 10 },
+          'Scrap Metal': { type: 'scraps', value: 10 },
+          'Medical Supplies': { type: 'meds', value: 25 },
+          'Survival Ration': { type: 'food', value: 25 },
+          'Purified Water': { type: 'water', value: 25 },
+          'Tool Set': { type: 'scraps', value: 25 },
+          'Advanced Medkit': { type: 'meds', value: 50 },
+          'Emergency Food': { type: 'food', value: 50 },
+          'Water Filter': { type: 'water', value: 50 },
+          'Material Cache': { type: 'materials', value: 50 },
+          'Miracle Drug': { type: 'meds', value: 100 },
+          'Nutrient Paste': { type: 'food', value: 100 },
+          'Endless Spring': { type: 'water', value: 100 },
+          'Unobtanium': { type: 'materials', value: 100 }
+        };
+        
+        const itemData = itemValues[itemName] || { type: 'scraps', value: 10 };
+        card = {
+          id: generateUniqueId(),
+          name: itemName,
+          category: 'items',
+          rarity: rarity,
+          color: RARITY_CONFIG[rarity].color,
+          resourceType: itemData.type,
+          resourceValue: itemData.value
+        };
+      }
+    } else if (category === 'locations') {
+      const availableLocations = cardSet.locations[rarity] || [];
+      if (availableLocations.length > 0) {
+        const locationData = availableLocations[Math.floor(Math.random() * availableLocations.length)];
+        card = {
+          id: generateUniqueId(),
+          name: locationData.name,
+          category: 'locations',
+          rarity: rarity,
+          color: RARITY_CONFIG[rarity].color,
+          requirements: locationData.requirements,
+          rewards: locationData.rewards
+        };
+      }
+    }
+
+    if (card) {
+      pulled.push(card);
+      gameState.collection.push(card);
+    }
+  }
+
+  gameState.resources.scraps -= 10;
+  saveGame();
+  return pulled;
 }
 
 function importExpansionPack(expansion) {
@@ -58,17 +278,12 @@ function importExpansionPack(expansion) {
     version: expansion.version,
     description: expansion.description,
     importedAt: new Date().toISOString(),
-    cardSets: expansion.cardSets // Save the full card data
+    cardSets: expansion.cardSets
   });
 
   // Merge card sets from expansion into existing CARD_SETS
   Object.keys(expansion.cardSets).forEach(setName => {
     const expansionSet = expansion.cardSets[setName];
-
-    // Create new set or merge with existing
-    if (!window.CARD_SETS) {
-      window.CARD_SETS = {};
-    }
 
     if (!window.CARD_SETS[setName]) {
       window.CARD_SETS[setName] = {
@@ -94,9 +309,9 @@ function importExpansionPack(expansion) {
   });
 
   saveGame();
-  displayCollection(); // Refresh display
-  displayImportedExpansions(); // Update expansion list
-  displayAvailablePacks(); // Update packs display
+  displayCollection();
+  displayImportedExpansions();
+  displayAvailablePacks();
 }
 
 function displayImportedExpansions() {
@@ -126,27 +341,14 @@ function resetAllExpansions() {
   }
 
   if (confirm('Are you sure you want to reset all expansion packs? This will remove all imported expansions and any expansion cards from your collection. This cannot be undone!')) {
-    // Clear imported expansions
     gameState.importedExpansions = [];
-
-    // Clear expansion card sets from global CARD_SETS
-    if (window.CARD_SETS) {
-      // Keep only the classic set if it exists
-      const classicSet = window.CARD_SETS.classic;
-      window.CARD_SETS = classicSet ? { classic: classicSet } : {};
-    }
-
-    // Remove expansion cards from collection
-    gameState.collection = gameState.collection.filter(card => {
-      // Keep cards that are from the original game (not from expansions)
-      // This is a simple check - you might need to adjust based on your card identification system
-      return !card.isExpansionCard;
-    });
+    window.CARD_SETS = CLASSIC_CARD_SETS;
+    gameState.collection = gameState.collection.filter(card => !card.isExpansionCard);
 
     saveGame();
-    displayImportedExpansions(); // Update expansion display
-    displayAvailablePacks(); // Update packs display
-    displayCollection(); // Update collection display
+    displayImportedExpansions();
+    displayAvailablePacks();
+    displayCollection();
     alert('All expansion packs have been reset!');
   }
 }
@@ -246,421 +448,395 @@ function displayCollection() {
       cardElement.innerHTML = createCardHTML(card) + (count > 1 ? `<div class="card-count">x${count}</div>` : '');
 
       cardElement.addEventListener('click', () => {
-        // For items, handle immediately without modal
-        if (card.category === 'items') {
-          gameState.resources[card.resourceType] += card.resourceValue;
-          const cardIndex = gameState.collection.findIndex(c => 
-            c.name === card.name && c.category === card.category && c.rarity === card.rarity
-          );
-          if (cardIndex > -1) {
-            gameState.collection.splice(cardIndex, 1);
-          }
-          saveGame();
-          updateResourceDisplay();
-          displayCollection();
-          return;
-        }
-
-        // For other categories, create modal
-        const detailsContainer = document.createElement('div');
-        detailsContainer.className = 'card-details-modal';
-        document.body.appendChild(detailsContainer);
-
-        if (card.category === 'survivors') {
-          const healthCosts = {
-            common: 25,
-            rare: 20,
-            epic: 15,
-            legendary: 10,
-            mythic: 5,
-            unique: 3
-          };
-
-          const isDead = card.stats.health <= 0;
-
-          if (isDead) {
-            // Remove dead survivor from collection
-            const cardIndex = gameState.collection.findIndex(c => 
-              c.name === card.name && c.category === card.category && c.rarity === card.rarity
-            );
-            if (cardIndex > -1) {
-              gameState.collection.splice(cardIndex, 1);
-              saveGame();
-              displayCollection();
-            }
-          }
-
-          detailsContainer.innerHTML = `
-            <div class="modal-content">
-              <div class="pulled-card" style="border-color: ${isDead ? '#000000' : card.color}">
-                ${createCardHTML(card)}
-              </div>
-              ${isDead ? `
-                <p class="death-notice">This survivor has died and has been removed from your collection.</p>
-              ` : `
-              <div class="modal-buttons">
-                <button class="action-btn" data-action="scavenge">Scavenge (STR) [-${healthCosts[card.rarity]} HP]</button>
-                <button class="action-btn" data-action="forage">Forage (DEX) [-${healthCosts[card.rarity]} HP]</button>
-                <button class="action-btn" data-action="engineer">Engineer (INT) [-${healthCosts[card.rarity]} HP]</button>
-                ${gameState.resources.meds > 0 ? `
-                <button class="heal-btn">Heal (+10 HP) [-1 Med]</button>
-                ` : ''}
-                <button class="close-modal">Close</button>
-              </div>
-              `}
-            </div>
-          `;
-
-          if (!isDead) {
-            const healBtn = detailsContainer.querySelector('.heal-btn');
-            if (healBtn) {
-              healBtn.addEventListener('click', () => {
-                gameState.resources.meds--;
-                card.stats.health = Math.min(100, card.stats.health + 10);
-
-                const summaryDiv = document.createElement('div');
-                summaryDiv.className = 'card-details-modal';
-                summaryDiv.innerHTML = `
-                  <div class="modal-content">
-                    <h3>Healing Results</h3>
-                    <div class="action-summary">
-                      <p>Used 1 Med</p>
-                      <p>Survivor Health: +10 (${card.stats.health} total)</p>
-                    </div>
-                    <button class="close-modal">Close</button>
-                  </div>
-                `;
-
-                saveGame();
-                updateResourceDisplay();
-                displayCollection();
-                document.body.removeChild(detailsContainer);
-
-                document.body.appendChild(summaryDiv);
-                summaryDiv.querySelector('.close-modal').addEventListener('click', () => {
-                  document.body.removeChild(summaryDiv);
-                });
-
-                summaryDiv.addEventListener('click', (e) => {
-                  if (e.target === summaryDiv) {
-                    document.body.removeChild(summaryDiv);
-                  }
-                });
-              });
-            }
-
-            detailsContainer.querySelectorAll('.action-btn').forEach(btn => {
-              btn.addEventListener('click', () => {
-                const action = btn.dataset.action;
-                const stat = action === 'scavenge' ? card.stats.str : 
-                           action === 'forage' ? card.stats.dex : 
-                           card.stats.int;
-
-                const baseAmount = Math.floor(stat * 2);
-
-                if (action === 'scavenge') {
-                  gameState.resources.scraps += baseAmount;
-                  gameState.resources.meds += Math.floor(baseAmount / 2);
-                } else if (action === 'forage') {
-                  gameState.resources.food += baseAmount;
-                  gameState.resources.water += baseAmount;
-                } else if (action === 'engineer') {
-                  gameState.resources.scraps += Math.floor(baseAmount / 2);
-                  gameState.resources.materials += baseAmount;
-                }
-
-                card.stats.health -= healthCosts[card.rarity];
-
-                if (card.stats.health <= 0) {
-                  const cardIndex = gameState.collection.findIndex(c => 
-                    c.name === card.name && c.category === card.category && c.rarity === card.rarity
-                  );
-                  if (cardIndex > -1) {
-                    gameState.collection.splice(cardIndex, 1);
-                  }
-                }
-
-                const summaryDiv = document.createElement('div');
-                summaryDiv.className = 'card-details-modal';
-                summaryDiv.innerHTML = `
-                  <div class="modal-content">
-                    <h3>Action Results</h3>
-                    <div class="action-summary">
-                      <p>Survivor Health: -${healthCosts[card.rarity]} (${card.stats.health} remaining)</p>
-                      ${action === 'scavenge' 
-                        ? `<p>Gained Scraps: +${baseAmount}</p>
-                           <p>Gained Meds: +${Math.floor(baseAmount / 2)}</p>`
-                        : action === 'forage'
-                        ? `<p>Gained Food: +${baseAmount}</p>
-                           <p>Gained Water: +${baseAmount}</p>`
-                        : `<p>Gained Scraps: +${Math.floor(baseAmount / 2)}</p>
-                           <p>Gained Materials: +${baseAmount}</p>`
-                      }
-                    </div>
-                    <button class="close-modal">Close</button>
-                  </div>
-                `;
-
-                saveGame();
-                updateResourceDisplay();
-                displayCollection();
-                document.body.removeChild(detailsContainer);
-
-                document.body.appendChild(summaryDiv);
-                summaryDiv.querySelector('.close-modal').addEventListener('click', () => {
-                  document.body.removeChild(summaryDiv);
-                });
-
-                summaryDiv.addEventListener('click', (e) => {
-                  if (e.target === summaryDiv) {
-                    document.body.removeChild(summaryDiv);
-                  }
-                });
-              });
-            });
-          }
-        } else if (card.category === 'items') {
-          // Use item immediately without showing modal
-          gameState.resources[card.resourceType] += card.resourceValue;
-          const cardIndex = gameState.collection.findIndex(c => 
-            c.name === card.name && c.category === card.category && c.rarity === card.rarity
-          );
-          if (cardIndex > -1) {
-            gameState.collection.splice(cardIndex, 1);
-          }
-          saveGame();
-          updateResourceDisplay();
-          displayCollection();
-          return;
-        } else if (card.category === 'locations') {
-          // Get unique available survivors by name
-          const availableSurvivors = gameState.collection
-            .filter(s => s.category === 'survivors' && s.stats.health > 0)
-            .filter((survivor, index, self) => 
-              index === self.findIndex(s => s.name === survivor.name)
-            );
-
-          detailsContainer.innerHTML = `
-            <div class="modal-content">
-              <div class="pulled-card" style="border-color: ${card.color}">
-                ${createCardHTML(card)}
-              </div>
-              <div class="survivor-selection">
-                <h3>Select Survivors (Required EP: ${card.requirements.ep})</h3>
-                <div class="survivors-grid">
-                  ${availableSurvivors.map(survivor => `
-                    <div class="survivor-card" data-survivor-id="${survivor.name}" style="border-color: ${survivor.color}">
-                      <h4>${survivor.name}</h4>
-                      <p>EP: ${survivor.stats.ep}</p>
-                      <p>HP: ${survivor.stats.health}</p>
-                    </div>
-                  `).join('')}
-                </div>
-                <div class="assignment-summary">
-                  <p>Total EP: <span id="total-ep">0</span></p>
-                </div>
-                <div class="modal-buttons">
-                  <button class="close-modal">Close</button>
-                  <button id="start-expedition" disabled>Start Expedition</button>
-                </div>
-              </div>
-            </div>
-          `;
-
-          const selectedSurvivors = new Set();
-          let totalEP = 0;
-
-          // Handle survivor selection
-          detailsContainer.querySelectorAll('.survivor-card').forEach(survivorCard => {
-            survivorCard.addEventListener('click', () => {
-              const survivorId = survivorCard.dataset.survivorId;
-
-              if (selectedSurvivors.has(survivorId)) {
-                selectedSurvivors.delete(survivorId);
-                survivorCard.classList.remove('selected');
-              } else {
-                selectedSurvivors.add(survivorId);
-                survivorCard.classList.add('selected');
-              }
-
-              // Calculate total EP directly from selected cards
-              totalEP = Array.from(document.querySelectorAll('.survivor-card.selected')).reduce((sum, card) => {
-                const epText = Array.from(card.querySelectorAll('p')).find(p => p.textContent.includes('EP: ')).textContent;
-                const ep = parseInt(epText.split('EP: ')[1], 10);
-                return sum + ep;
-              }, 0);
-
-              // Update EP display and expedition button
-              const totalEpDisplay = document.getElementById('total-ep');
-              const startExpeditionBtn = document.getElementById('start-expedition');
-
-              totalEpDisplay.textContent = totalEP;
-              startExpeditionBtn.disabled = totalEP < parseInt(card.requirements.ep);
-              console.log('EP Check:', { totalEP, required: card.requirements.ep, isDisabled: startExpeditionBtn.disabled });
-            });
-          });
-
-          // Handle expedition start
-          const startExpeditionBtn = document.getElementById('start-expedition');
-          startExpeditionBtn.addEventListener('click', () => {
-            // Define base HP loss by survivor rarity
-            const baseHpLoss = {
-              common: 60,
-              rare: 40,
-              epic: 30,
-              legendary: 20,
-              mythic: 10,
-              unique: 5
-            };
-
-            // Define location difficulty multiplier
-            const locationMultiplier = {
-              common: 1,
-              rare: 1.5,
-              epic: 2,
-              legendary: 2.5,
-              mythic: 3,
-              unique: 4
-            };
-
-            // Process HP loss for selected survivors
-            const survivorResults = [];
-            let hpLossApplied = false;
-
-            Array.from(selectedSurvivors).forEach(survivorId => {
-              console.log("Processing survivor:", survivorId);
-              const survivorData = gameState.collection.find(s => 
-                s.name === survivorId && s.category === 'survivors' && s.stats.health > 0
-              );
-
-              if (survivorData) {
-                const baseLoss = baseHpLoss[survivorData.rarity.toLowerCase()];
-                const multiplier = locationMultiplier[card.rarity.toLowerCase()];
-                const totalLoss = Math.floor(baseLoss * multiplier);
-
-                const originalHealth = survivorData.stats.health;
-                survivorData.stats.health = Math.max(0, originalHealth - totalLoss);
-
-                if (survivorData.stats.health < originalHealth) {
-                  hpLossApplied = true;
-                }
-                console.log('HP Loss calculation:', { 
-                  survivor: survivorData.name,
-                  rarity: survivorData.rarity,
-                  baseLoss,
-                  multiplier,
-                  totalLoss,
-                  originalHealth,
-                  newHealth: survivorData.stats.health
-                });
-
-                survivorResults.push({
-                  name: survivorData.name,
-                  rarity: survivorData.rarity,
-                  loss: totalLoss,
-                  remainingHealth: survivorData.stats.health
-                });
-              }
-            });
-
-            // Verify HP loss was applied before giving rewards
-            if (!hpLossApplied) {
-              throw new Error('Expedition failed - no valid HP loss recorded');
-            }
-
-            // Add rewards to resources
-            Object.entries(card.rewards).forEach(([resource, amount]) => {
-              gameState.resources[resource] += amount;
-            });
-
-            // Remove the used location card from collection
-            const cardIndex = gameState.collection.findIndex(c => 
-              c.name === card.name && c.category === card.category && c.rarity === card.rarity
-            );
-            if (cardIndex > -1) {
-              gameState.collection.splice(cardIndex, 1);
-              saveGame();
-              displayCollection(); // Update the UI to reflect the removed card
-            }
-
-            // Create and show results modal with survivor health changes
-            const resultsModal = document.createElement('div');
-            resultsModal.className = 'card-details-modal';
-            resultsModal.innerHTML = `
-              <div class="modal-content">
-                <h3>EXPEDITION RESULTS</h3>
-                <div class="action-summary">
-                  <h4>Location: ${card.name} (${card.rarity})</h4>
-
-                  <h4>Resources Gained:</h4>
-                  ${Object.entries(card.rewards).map(([resource, amount]) => 
-                    `<p>Gained ${resource}: +${amount}</p>`
-                  ).join('')}
-
-                  <h4>Expedition Team Status:</h4>
-                  <div class="survivor-status">
-                    ${survivorResults.map(result => `
-                      <div class="survivor-status-entry">
-                        <p class="survivor-name">${result.name} (${result.rarity})</p>
-                        <p class="hp-loss">Health Lost: -${result.loss}</p>
-                        <p class="hp-remaining">Remaining HP: ${result.remainingHealth}/100</p>
-                        <div class="health-bar">
-                          <div class="health-fill" style="width: ${result.remainingHealth}%"></div>
-                        </div>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-                <button class="close-modal">Continue</button>
-              </div>
-            `;
-
-            document.body.removeChild(detailsContainer);
-            document.body.appendChild(resultsModal);
-
-            // Handle closing of results modal
-            const closeBtn = resultsModal.querySelector('.close-modal');
-            closeBtn.addEventListener('click', () => {
-              document.body.removeChild(resultsModal);
-            });
-
-            resultsModal.addEventListener('click', (e) => {
-              if (e.target === resultsModal) {
-                document.body.removeChild(resultsModal);
-              }
-            });
-
-            updateResourceDisplay();
-          });
-        } else {
-          detailsContainer.innerHTML = `
-            <div class="modal-content">
-              <div class="pulled-card" style="border-color: ${card.color}">
-                ${createCardHTML(card)}
-              </div>
-              <div class="modal-buttons">
-                <button class="close-modal">Close</button>
-              </div>
-            </div>
-          `;
-        }
-
-        const closeButton = detailsContainer.querySelector('.close-modal');
-        if (closeButton) {
-          closeButton.addEventListener('click', () => {
-            document.body.removeChild(detailsContainer);
-          });
-        }
-
-        detailsContainer.addEventListener('click', (e) => {
-          if (e.target === detailsContainer) {
-            document.body.removeChild(detailsContainer);
-          }
-        });
+        handleCardClick(card);
       });
 
       container.appendChild(cardElement);
     });
+  });
+}
+
+function handleCardClick(card) {
+  // For items, handle immediately without modal
+  if (card.category === 'items') {
+    gameState.resources[card.resourceType] += card.resourceValue;
+    const cardIndex = gameState.collection.findIndex(c => 
+      c.name === card.name && c.category === card.category && c.rarity === card.rarity
+    );
+    if (cardIndex > -1) {
+      gameState.collection.splice(cardIndex, 1);
+    }
+    saveGame();
+    updateResourceDisplay();
+    displayCollection();
+    return;
+  }
+
+  // For other categories, create modal
+  const detailsContainer = document.createElement('div');
+  detailsContainer.className = 'card-details-modal';
+  document.body.appendChild(detailsContainer);
+
+  if (card.category === 'survivors') {
+    handleSurvivorClick(card, detailsContainer);
+  } else if (card.category === 'locations') {
+    handleLocationClick(card, detailsContainer);
+  } else {
+    detailsContainer.innerHTML = `
+      <div class="modal-content">
+        <div class="pulled-card" style="border-color: ${card.color}">
+          ${createCardHTML(card)}
+        </div>
+        <div class="modal-buttons">
+          <button class="close-modal">Close</button>
+        </div>
+      </div>
+    `;
+  }
+
+  const closeButton = detailsContainer.querySelector('.close-modal');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      document.body.removeChild(detailsContainer);
+    });
+  }
+
+  detailsContainer.addEventListener('click', (e) => {
+    if (e.target === detailsContainer) {
+      document.body.removeChild(detailsContainer);
+    }
+  });
+}
+
+function handleSurvivorClick(card, detailsContainer) {
+  const healthCosts = {
+    common: 25,
+    rare: 20,
+    epic: 15,
+    legendary: 10,
+    mythic: 5,
+    unique: 3
+  };
+
+  const isDead = card.stats.health <= 0;
+
+  if (isDead) {
+    const cardIndex = gameState.collection.findIndex(c => 
+      c.name === card.name && c.category === card.category && c.rarity === card.rarity
+    );
+    if (cardIndex > -1) {
+      gameState.collection.splice(cardIndex, 1);
+      saveGame();
+      displayCollection();
+    }
+  }
+
+  detailsContainer.innerHTML = `
+    <div class="modal-content">
+      <div class="pulled-card" style="border-color: ${isDead ? '#000000' : card.color}">
+        ${createCardHTML(card)}
+      </div>
+      ${isDead ? `
+        <p class="death-notice">This survivor has died and has been removed from your collection.</p>
+      ` : `
+      <div class="modal-buttons">
+        <button class="action-btn" data-action="scavenge">Scavenge (STR) [-${healthCosts[card.rarity]} HP]</button>
+        <button class="action-btn" data-action="forage">Forage (DEX) [-${healthCosts[card.rarity]} HP]</button>
+        <button class="action-btn" data-action="engineer">Engineer (INT) [-${healthCosts[card.rarity]} HP]</button>
+        ${gameState.resources.meds > 0 ? `
+        <button class="heal-btn">Heal (+10 HP) [-1 Med]</button>
+        ` : ''}
+        <button class="close-modal">Close</button>
+      </div>
+      `}
+    </div>
+  `;
+
+  if (!isDead) {
+    const healBtn = detailsContainer.querySelector('.heal-btn');
+    if (healBtn) {
+      healBtn.addEventListener('click', () => {
+        gameState.resources.meds--;
+        card.stats.health = Math.min(100, card.stats.health + 10);
+
+        const summaryDiv = document.createElement('div');
+        summaryDiv.className = 'card-details-modal';
+        summaryDiv.innerHTML = `
+          <div class="modal-content">
+            <h3>Healing Results</h3>
+            <div class="action-summary">
+              <p>Used 1 Med</p>
+              <p>Survivor Health: +10 (${card.stats.health} total)</p>
+            </div>
+            <button class="close-modal">Close</button>
+          </div>
+        `;
+
+        saveGame();
+        updateResourceDisplay();
+        displayCollection();
+        document.body.removeChild(detailsContainer);
+
+        document.body.appendChild(summaryDiv);
+        summaryDiv.querySelector('.close-modal').addEventListener('click', () => {
+          document.body.removeChild(summaryDiv);
+        });
+
+        summaryDiv.addEventListener('click', (e) => {
+          if (e.target === summaryDiv) {
+            document.body.removeChild(summaryDiv);
+          }
+        });
+      });
+    }
+
+    detailsContainer.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        const stat = action === 'scavenge' ? card.stats.str : 
+                   action === 'forage' ? card.stats.dex : 
+                   card.stats.int;
+
+        const baseAmount = Math.floor(stat * 2);
+
+        if (action === 'scavenge') {
+          gameState.resources.scraps += baseAmount;
+          gameState.resources.meds += Math.floor(baseAmount / 2);
+        } else if (action === 'forage') {
+          gameState.resources.food += baseAmount;
+          gameState.resources.water += baseAmount;
+        } else if (action === 'engineer') {
+          gameState.resources.scraps += Math.floor(baseAmount / 2);
+          gameState.resources.materials += baseAmount;
+        }
+
+        card.stats.health -= healthCosts[card.rarity];
+
+        if (card.stats.health <= 0) {
+          const cardIndex = gameState.collection.findIndex(c => 
+            c.name === card.name && c.category === card.category && c.rarity === card.rarity
+          );
+          if (cardIndex > -1) {
+            gameState.collection.splice(cardIndex, 1);
+          }
+        }
+
+        const summaryDiv = document.createElement('div');
+        summaryDiv.className = 'card-details-modal';
+        summaryDiv.innerHTML = `
+          <div class="modal-content">
+            <h3>Action Results</h3>
+            <div class="action-summary">
+              <p>Survivor Health: -${healthCosts[card.rarity]} (${card.stats.health} remaining)</p>
+              ${action === 'scavenge' 
+                ? `<p>Gained Scraps: +${baseAmount}</p>
+                   <p>Gained Meds: +${Math.floor(baseAmount / 2)}</p>`
+                : action === 'forage'
+                ? `<p>Gained Food: +${baseAmount}</p>
+                   <p>Gained Water: +${baseAmount}</p>`
+                : `<p>Gained Scraps: +${Math.floor(baseAmount / 2)}</p>
+                   <p>Gained Materials: +${baseAmount}</p>`
+              }
+            </div>
+            <button class="close-modal">Close</button>
+          </div>
+        `;
+
+        saveGame();
+        updateResourceDisplay();
+        displayCollection();
+        document.body.removeChild(detailsContainer);
+
+        document.body.appendChild(summaryDiv);
+        summaryDiv.querySelector('.close-modal').addEventListener('click', () => {
+          document.body.removeChild(summaryDiv);
+        });
+
+        summaryDiv.addEventListener('click', (e) => {
+          if (e.target === summaryDiv) {
+            document.body.removeChild(summaryDiv);
+          }
+        });
+      });
+    });
+  }
+}
+
+function handleLocationClick(card, detailsContainer) {
+  const availableSurvivors = gameState.collection
+    .filter(s => s.category === 'survivors' && s.stats.health > 0)
+    .filter((survivor, index, self) => 
+      index === self.findIndex(s => s.name === survivor.name)
+    );
+
+  detailsContainer.innerHTML = `
+    <div class="modal-content">
+      <div class="pulled-card" style="border-color: ${card.color}">
+        ${createCardHTML(card)}
+      </div>
+      <div class="survivor-selection">
+        <h3>Select Survivors (Required EP: ${card.requirements.ep})</h3>
+        <div class="survivors-grid">
+          ${availableSurvivors.map(survivor => `
+            <div class="survivor-card" data-survivor-id="${survivor.name}" style="border-color: ${survivor.color}">
+              <h4>${survivor.name}</h4>
+              <p>EP: ${survivor.stats.ep}</p>
+              <p>HP: ${survivor.stats.health}</p>
+            </div>
+          `).join('')}
+        </div>
+        <div class="assignment-summary">
+          <p>Total EP: <span id="total-ep">0</span></p>
+        </div>
+        <div class="modal-buttons">
+          <button class="close-modal">Close</button>
+          <button id="start-expedition" disabled>Start Expedition</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const selectedSurvivors = new Set();
+  let totalEP = 0;
+
+  detailsContainer.querySelectorAll('.survivor-card').forEach(survivorCard => {
+    survivorCard.addEventListener('click', () => {
+      const survivorId = survivorCard.dataset.survivorId;
+
+      if (selectedSurvivors.has(survivorId)) {
+        selectedSurvivors.delete(survivorId);
+        survivorCard.classList.remove('selected');
+      } else {
+        selectedSurvivors.add(survivorId);
+        survivorCard.classList.add('selected');
+      }
+
+      totalEP = Array.from(document.querySelectorAll('.survivor-card.selected')).reduce((sum, cardEl) => {
+        const epText = Array.from(cardEl.querySelectorAll('p')).find(p => p.textContent.includes('EP: ')).textContent;
+        const ep = parseInt(epText.split('EP: ')[1], 10);
+        return sum + ep;
+      }, 0);
+
+      const totalEpDisplay = document.getElementById('total-ep');
+      const startExpeditionBtn = document.getElementById('start-expedition');
+
+      totalEpDisplay.textContent = totalEP;
+      startExpeditionBtn.disabled = totalEP < parseInt(card.requirements.ep);
+    });
+  });
+
+  const startExpeditionBtn = document.getElementById('start-expedition');
+  startExpeditionBtn.addEventListener('click', () => {
+    const baseHpLoss = {
+      common: 60,
+      rare: 40,
+      epic: 30,
+      legendary: 20,
+      mythic: 10,
+      unique: 5
+    };
+
+    const locationMultiplier = {
+      common: 1,
+      rare: 1.5,
+      epic: 2,
+      legendary: 2.5,
+      mythic: 3,
+      unique: 4
+    };
+
+    const survivorResults = [];
+    let hpLossApplied = false;
+
+    Array.from(selectedSurvivors).forEach(survivorId => {
+      const survivorData = gameState.collection.find(s => 
+        s.name === survivorId && s.category === 'survivors' && s.stats.health > 0
+      );
+
+      if (survivorData) {
+        const baseLoss = baseHpLoss[survivorData.rarity.toLowerCase()];
+        const multiplier = locationMultiplier[card.rarity.toLowerCase()];
+        const totalLoss = Math.floor(baseLoss * multiplier);
+
+        const originalHealth = survivorData.stats.health;
+        survivorData.stats.health = Math.max(0, originalHealth - totalLoss);
+
+        if (survivorData.stats.health < originalHealth) {
+          hpLossApplied = true;
+        }
+
+        survivorResults.push({
+          name: survivorData.name,
+          rarity: survivorData.rarity,
+          loss: totalLoss,
+          remainingHealth: survivorData.stats.health
+        });
+      }
+    });
+
+    if (!hpLossApplied) {
+      throw new Error('Expedition failed - no valid HP loss recorded');
+    }
+
+    Object.entries(card.rewards).forEach(([resource, amount]) => {
+      gameState.resources[resource] += amount;
+    });
+
+    const cardIndex = gameState.collection.findIndex(c => 
+      c.name === card.name && c.category === card.category && c.rarity === card.rarity
+    );
+    if (cardIndex > -1) {
+      gameState.collection.splice(cardIndex, 1);
+      saveGame();
+      displayCollection();
+    }
+
+    const resultsModal = document.createElement('div');
+    resultsModal.className = 'card-details-modal';
+    resultsModal.innerHTML = `
+      <div class="modal-content">
+        <h3>EXPEDITION RESULTS</h3>
+        <div class="action-summary">
+          <h4>Location: ${card.name} (${card.rarity})</h4>
+
+          <h4>Resources Gained:</h4>
+          ${Object.entries(card.rewards).map(([resource, amount]) => 
+            `<p>Gained ${resource}: +${amount}</p>`
+          ).join('')}
+
+          <h4>Expedition Team Status:</h4>
+          <div class="survivor-status">
+            ${survivorResults.map(result => `
+              <div class="survivor-status-entry">
+                <p class="survivor-name">${result.name} (${result.rarity})</p>
+                <p class="hp-loss">Health Lost: -${result.loss}</p>
+                <p class="hp-remaining">Remaining HP: ${result.remainingHealth}/100</p>
+                <div class="health-bar">
+                  <div class="health-fill" style="width: ${result.remainingHealth}%"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <button class="close-modal">Continue</button>
+      </div>
+    `;
+
+    document.body.removeChild(detailsContainer);
+    document.body.appendChild(resultsModal);
+
+    const closeBtn = resultsModal.querySelector('.close-modal');
+    closeBtn.addEventListener('click', () => {
+      document.body.removeChild(resultsModal);
+    });
+
+    resultsModal.addEventListener('click', (e) => {
+      if (e.target === resultsModal) {
+        document.body.removeChild(resultsModal);
+      }
+    });
+
+    updateResourceDisplay();
   });
 }
 
@@ -682,11 +858,9 @@ function updateResourceDisplay() {
 }
 
 function applySettings() {
-  // Apply font settings to body
   document.body.style.fontSize = `${gameState.settings.fontSize}px`;
   document.body.style.fontFamily = gameState.settings.fontFamily;
 
-  // Update UI elements to reflect current settings
   const fontSizeSlider = document.getElementById('fontSizeSlider');
   const fontSizeValue = document.getElementById('fontSizeValue');
   const fontSelect = document.getElementById('fontSelect');
@@ -702,7 +876,6 @@ function applySettings() {
   if (volumeValue) volumeValue.textContent = `${gameState.settings.musicVolume}%`;
 }
 
-// Resource depletion timer
 function updateTimer(secondsLeft, survivorCount) {
   const timerDisplay = document.getElementById('timer-countdown');
   const depletionPreview = document.getElementById('depletion-preview');
@@ -728,22 +901,18 @@ function startResourceDepletion() {
     unique: 1
   };
 
-  // Countdown timer that updates every second for display
   const countdownTimer = setInterval(() => {
     const survivors = gameState.collection.filter(card => card.category === 'survivors');
     const survivorCount = survivors.length;
     secondsLeft--;
 
-    // Only update the timer display
     updateTimer(secondsLeft, survivorCount);
 
-    // Reset countdown when it reaches 0
     if (secondsLeft <= 0) {
       secondsLeft = 60;
     }
   }, 1000);
 
-  // Game update timer that runs every 60 seconds
   const gameUpdateTimer = setInterval(() => {
     const survivors = gameState.collection.filter(card => card.category === 'survivors');
     const survivorCount = survivors.length;
@@ -752,28 +921,25 @@ function startResourceDepletion() {
       gameState.resources.food = Math.max(0, gameState.resources.food - survivorCount);
       gameState.resources.water = Math.max(0, gameState.resources.water - survivorCount);
 
-      // Only apply health loss if both food and water are at 0
       if (gameState.resources.food === 0 && gameState.resources.water === 0) {
         survivors.forEach(survivor => {
           survivor.stats.health = Math.max(0, survivor.stats.health - healthLoss[survivor.rarity]);
         });
       }
 
-      // Apply damage to outermost base grid squares
       applyBaseDamage();
 
       updateResourceDisplay();
-      displayCollection(); // Update UI to show new health values
-      updatePowerupGrid(); // Update base grid to show new health values
+      displayCollection();
+      updatePowerupGrid();
       saveGame();
     }
-  }, 60000); // 60 seconds = 60000ms
+  }, 60000);
 
   return { countdownTimer, gameUpdateTimer };
 }
 
 function applyBaseDamage() {
-  // Apply damage to only owned outermost grid squares
   for (let i = 0; i < 25; i++) {
     const row = Math.floor(i / 5);
     const col = i % 5;
@@ -784,7 +950,6 @@ function applyBaseDamage() {
     if (isOutermost && isOwned) {
       gameState.gridHealth[i] = Math.max(0, gameState.gridHealth[i] - gameState.baseSettings.outermostDamage);
 
-      // If an outermost cell reaches 0 health, damage the core
       if (gameState.gridHealth[i] === 0) {
         gameState.baseSettings.coreHealth = Math.max(0, gameState.baseSettings.coreHealth - 5);
       }
@@ -793,14 +958,12 @@ function applyBaseDamage() {
 }
 
 function updatePowerupGrid() {
-  // Update all cell health bars
   for (let i = 0; i < 25; i++) {
     const cell = document.querySelector(`.powerup-cell[data-index="${i}"]`);
     if (cell) {
       const healthFill = cell.querySelector('.health-fill');
       if (healthFill) {
         if (i === 12) {
-          // Update core health display
           const coreHealthPercent = (gameState.baseSettings.coreHealth / gameState.baseSettings.maxCoreHealth) * 100;
           healthFill.style.width = `${coreHealthPercent}%`;
 
@@ -809,7 +972,6 @@ function updatePowerupGrid() {
             coreHealthDisplay.textContent = `HP: ${gameState.baseSettings.coreHealth}/${gameState.baseSettings.maxCoreHealth}`;
           }
         } else {
-          // Update regular cell health
           healthFill.style.width = `${gameState.gridHealth[i]}%`;
         }
       }
@@ -818,11 +980,9 @@ function updatePowerupGrid() {
 }
 
 function healAllSurvivors() {
-  // Only get living survivors (health > 0)
   const survivors = gameState.collection.filter(card => card.category === 'survivors' && card.stats.health > 0);
   let totalMedsNeeded = 0;
 
-  // Calculate total meds needed for living survivors only
   survivors.forEach(survivor => {
     if (survivor.stats.health < 100) {
       const healthNeeded = 100 - survivor.stats.health;
@@ -840,7 +1000,6 @@ function healAllSurvivors() {
     return;
   }
 
-  // Heal all living survivors
   survivors.forEach(survivor => {
     if (survivor.stats.health < 100) {
       const healthNeeded = 100 - survivor.stats.health;
@@ -853,88 +1012,86 @@ function healAllSurvivors() {
   saveGame();
   updateResourceDisplay();
   displayCollection();
-  alert(`Healed all survivors using ${totalMedsNeeded} meds!`);
+  alert(`All survivors healed using ${totalMedsNeeded} meds!`);
 }
 
-// Define global functions before DOMContentLoaded
-window.addUpgradeButtons = function() {
+// Global functions for powerup grid
+function addUpgradeButtons() {
   for (let i = 0; i < 25; i++) {
     const cell = document.querySelector(`.powerup-cell[data-index="${i}"]`);
     if (cell && (cell.classList.contains('unlocked') || cell.classList.contains('center'))) {
-        // Remove existing upgrade container if it exists
-        const existingContainer = cell.querySelector('.upgrade-container');
-        if (existingContainer) {
-          existingContainer.remove();
-        }
+      const existingContainer = cell.querySelector('.upgrade-container');
+      if (existingContainer) {
+        existingContainer.remove();
+      }
 
-        const upgradeContainer = document.createElement('div');
-        upgradeContainer.className = 'upgrade-container';
+      const upgradeContainer = document.createElement('div');
+      upgradeContainer.className = 'upgrade-container';
 
-        const currentHealth = gameState.gridHealth[i];
-        const maxHealth = gameState.gridMaxHealth[i];
+      const currentHealth = gameState.gridHealth[i];
+      const maxHealth = gameState.gridMaxHealth[i];
 
-        upgradeContainer.innerHTML = `
-          ${currentHealth < maxHealth ? '<button class="repair-btn" data-index="' + i + '">R</button>' : ''}
-          <button class="upgrade-btn" data-index="' + i + '">+</button>
-        `;
+      upgradeContainer.innerHTML = `
+        ${currentHealth < maxHealth ? '<button class="repair-btn" data-index="' + i + '">R</button>' : ''}
+        <button class="upgrade-btn" data-index="' + i + '">+</button>
+      `;
 
-        // Add event listeners for repair and upgrade buttons
-        const repairBtn = upgradeContainer.querySelector('.repair-btn');
-        const upgradeBtn = upgradeContainer.querySelector('.upgrade-btn');
+      const repairBtn = upgradeContainer.querySelector('.repair-btn');
+      const upgradeBtn = upgradeContainer.querySelector('.upgrade-btn');
 
-        if (repairBtn) {
-          repairBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const index = parseInt(repairBtn.dataset.index);
-            const repairCost = 25;
+      if (repairBtn) {
+        repairBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const index = parseInt(repairBtn.dataset.index);
+          const repairCost = 25;
 
-            if (gameState.resources.materials >= repairCost) {
-              const currentHealth = gameState.gridHealth[index];
-              const maxHealth = gameState.gridMaxHealth[index];
-              const repairAmount = Math.min(25, maxHealth - currentHealth);
+          if (gameState.resources.materials >= repairCost) {
+            const currentHealth = gameState.gridHealth[index];
+            const maxHealth = gameState.gridMaxHealth[index];
+            const repairAmount = Math.min(25, maxHealth - currentHealth);
 
-              if (repairAmount > 0) {
-                gameState.resources.materials -= repairCost;
-                gameState.gridHealth[index] = Math.min(maxHealth, currentHealth + repairAmount);
-                updateResourceDisplay();
-                window.addUpgradeButtons(); // Refresh buttons
-                updatePowerupGrid();
-                saveGame();
-              } else {
-                alert('Cell is already at full health!');
-              }
-            } else {
-              alert(`Not enough materials! Need ${repairCost} materials to repair.`);
-            }
-          });
-        }
-
-        if (upgradeBtn) {
-          upgradeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const index = parseInt(upgradeBtn.dataset.index);
-            const upgradeCost = 50;
-
-            if (gameState.resources.materials >= upgradeCost) {
-              gameState.resources.materials -= upgradeCost;
-              gameState.gridMaxHealth[index] += 25;
-              gameState.gridHealth[index] += 25; // Also increase current health
+            if (repairAmount > 0) {
+              gameState.resources.materials -= repairCost;
+              gameState.gridHealth[index] = Math.min(maxHealth, currentHealth + repairAmount);
               updateResourceDisplay();
-              window.addUpgradeButtons(); // Refresh buttons
+              addUpgradeButtons();
               updatePowerupGrid();
               saveGame();
             } else {
-              alert(`Not enough materials! Need ${upgradeCost} materials to upgrade.`);
+              alert('Cell is already at full health!');
             }
-          });
-        }
+          } else {
+            alert(`Not enough materials! Need ${repairCost} materials to repair.`);
+          }
+        });
+      }
 
-        cell.appendChild(upgradeContainer);
+      if (upgradeBtn) {
+        upgradeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const index = parseInt(upgradeBtn.dataset.index);
+          const upgradeCost = 50;
+
+          if (gameState.resources.materials >= upgradeCost) {
+            gameState.resources.materials -= upgradeCost;
+            gameState.gridMaxHealth[index] += 25;
+            gameState.gridHealth[index] += 25;
+            updateResourceDisplay();
+            addUpgradeButtons();
+            updatePowerupGrid();
+            saveGame();
+          } else {
+            alert(`Not enough materials! Need ${upgradeCost} materials to upgrade.`);
+          }
+        });
+      }
+
+      cell.appendChild(upgradeContainer);
     }
   }
-};
+}
 
-window.makeAdjacentCellsAvailable = function(index) {
+function makeAdjacentCellsAvailable(index) {
   const row = Math.floor(index / 5);
   const col = index % 5;
   const adjacentPositions = [
@@ -954,21 +1111,252 @@ window.makeAdjacentCellsAvailable = function(index) {
     }
   });
 
-  // Add upgrade buttons to the newly unlocked cell
-  window.addUpgradeButtons();
-};
+  addUpgradeButtons();
+}
 
+function initializePowerupGrid() {
+  const grid = document.querySelector('.powerup-grid');
+  if (!grid) return;
+
+  if (!gameState.gridHealth) {
+    gameState.gridHealth = Array(25).fill(100);
+  }
+
+  if (!gameState.gridMaxHealth) {
+    gameState.gridMaxHealth = Array(25).fill(100);
+  }
+
+  if (!gameState.baseSettings) {
+    gameState.baseSettings = {
+      coreHealth: 100,
+      maxCoreHealth: 100,
+      outermostDamage: 10,
+      outermostStartingHealth: 100
+    };
+  }
+
+  for (let i = 0; i < 25; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'powerup-cell';
+    cell.dataset.index = i;
+
+    const healthBar = document.createElement('div');
+    healthBar.className = 'health-bar';
+    const healthFill = document.createElement('div');
+    healthFill.className = 'health-fill';
+    healthFill.style.width = `${gameState.gridHealth[i]}%`;
+    healthBar.appendChild(healthFill);
+    cell.appendChild(healthBar);
+
+    if (i === 12) {
+      cell.classList.add('center', 'unlocked');
+      cell.innerHTML = `
+        <div class="core-label">Core</div>
+        <div class="core-health">HP: ${gameState.baseSettings.coreHealth}/${gameState.baseSettings.maxCoreHealth}</div>
+      `;
+
+      healthFill.style.width = `${(gameState.baseSettings.coreHealth / gameState.baseSettings.maxCoreHealth) * 100}%`;
+    } else {
+      const row = Math.floor(i / 5);
+      const col = i % 5;
+      const centerRow = 2;
+      const centerCol = 2;
+      const distance = Math.abs(row - centerRow) + Math.abs(col - centerCol);
+
+      const cost = Math.floor(100 * Math.pow(2, distance - 1));
+      cell.dataset.cost = cost;
+
+      const isOutermost = row === 0 || row === 4 || col === 0 || col === 4;
+      if (isOutermost) {
+        cell.classList.add('outermost');
+        if (gameState.gridHealth[i] === 100) {
+          gameState.gridHealth[i] = gameState.baseSettings.outermostStartingHealth;
+        }
+      }
+
+      if (distance === 1) {
+        cell.classList.add('available');
+      }
+    }
+
+    cell.addEventListener('click', () => {
+      if (!cell.classList.contains('available')) return;
+
+      const cost = parseInt(cell.dataset.cost);
+      if (gameState.resources.materials >= cost) {
+        gameState.resources.materials -= cost;
+        cell.classList.remove('available');
+        cell.classList.add('unlocked');
+
+        makeAdjacentCellsAvailable(i);
+
+        updateResourceDisplay();
+        saveGame();
+      } else {
+        alert(`Not enough materials! Need ${cost} materials.`);
+      }
+    });
+
+    cell.addEventListener('mouseover', () => {
+      if (cell.classList.contains('available')) {
+        const costDisplay = document.querySelector('.cost-display');
+        costDisplay.textContent = `Cost: ${cell.dataset.cost} Materials`;
+      }
+    });
+
+    grid.appendChild(cell);
+  }
+
+  addUpgradeButtons();
+}
+
+function displayAvailablePacks() {
+  const packGrid = document.querySelector('#packs .pack-grid');
+  if (!packGrid) return;
+
+  packGrid.innerHTML = '';
+
+  const classicPack = document.createElement('div');
+  classicPack.className = 'pack';
+  classicPack.innerHTML = `
+    <h3>Classic Pack</h3>
+    <p>The original survivor pack set</p>
+    <p class="pack-cost">10 Scraps</p>
+  `;
+
+  classicPack.addEventListener('click', () => {
+    try {
+      const cards = openPack();
+      showPackResults(cards, 'Classic Pack');
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  packGrid.appendChild(classicPack);
+
+  if (gameState.importedExpansions && gameState.importedExpansions.length > 0) {
+    gameState.importedExpansions.forEach(expansion => {
+      const expansionPack = document.createElement('div');
+      expansionPack.className = 'pack expansion-pack';
+      expansionPack.innerHTML = `
+        <h3>${expansion.name} Pack</h3>
+        <p>${expansion.description || 'Expansion pack content'}</p>
+        <p class="pack-cost">10 Scraps</p>
+        <p class="expansion-version">v${expansion.version}</p>
+      `;
+
+      expansionPack.addEventListener('click', () => {
+        try {
+          if (window.CARD_SETS) {
+            const expansionSetNames = Object.keys(window.CARD_SETS);
+            const setName = expansionSetNames.find(name => name.includes(expansion.name.toLowerCase().replace(/\s+/g, '_'))) || expansionSetNames[0];
+
+            if (setName) {
+              const cards = openPack(3, setName);
+              showPackResults(cards, `${expansion.name} Pack`);
+            } else {
+              alert('Expansion pack data not found. Try re-importing the expansion.');
+            }
+          } else {
+            alert('No expansion packs are currently loaded.');
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+
+      packGrid.appendChild(expansionPack);
+    });
+  }
+}
+
+function showPackResults(cards, packName) {
+  const modalDiv = document.createElement('div');
+  modalDiv.className = 'card-details-modal';
+
+  modalDiv.innerHTML = `
+    <div class="modal-content pack-results">
+      <h3>${packName} Opening Results</h3>
+      <div class="pull-results">
+        ${cards.map(card => `
+          <div class="pulled-card" style="border-color: ${card.color}">
+            ${createCardHTML(card)}
+          </div>
+        `).join('')}
+      </div>
+      <div class="modal-buttons">
+        <button class="open-another-pack" ${gameState.resources.scraps < 10 ? 'disabled' : ''}>Open Another Pack (10 Scraps)</button>
+        <button class="close-modal">Continue</button>
+      </div>
+    </div>
+  `;
+
+  const openAnotherBtn = modalDiv.querySelector('.open-another-pack');
+  if (openAnotherBtn) {
+    openAnotherBtn.addEventListener('click', () => {
+      try {
+        if (gameState.resources.scraps < 10) {
+          alert('Not enough scraps to open pack');
+          return;
+        }
+
+        let setName = 'classic';
+        if (packName !== 'Classic Pack') {
+          const expansionName = packName.replace(' Pack', '');
+          if (window.CARD_SETS) {
+            const expansionSetNames = Object.keys(window.CARD_SETS);
+            setName = expansionSetNames.find(name => name.includes(expansionName.toLowerCase().replace(/\s+/g, '_'))) || expansionSetNames[0] || 'classic';
+          }
+        }
+
+        const newCards = openPack(3, setName);
+
+        const pullResults = modalDiv.querySelector('.pull-results');
+        if (pullResults) {
+          pullResults.innerHTML = newCards.map(card => `
+            <div class="pulled-card" style="border-color: ${card.color}">
+              ${createCardHTML(card)}
+            </div>
+          `).join('');
+        }
+
+        openAnotherBtn.disabled = gameState.resources.scraps < 10;
+
+        updateResourceDisplay();
+        displayCollection();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  }
+
+  document.body.appendChild(modalDiv);
+
+  const closeButton = modalDiv.querySelector('.close-modal');
+  closeButton.addEventListener('click', () => {
+    document.body.removeChild(modalDiv);
+  });
+
+  modalDiv.addEventListener('click', (e) => {
+    if (e.target === modalDiv) {
+      document.body.removeChild(modalDiv);
+    }
+  });
+
+  updateResourceDisplay();
+  displayCollection();
+}
+
+// DOMContentLoaded event handler
 document.addEventListener('DOMContentLoaded', () => {
-  // Start resource depletion timer
   const depletionTimers = startResourceDepletion();
 
-  // Initialize Heal All button
   const healAllBtn = document.getElementById('healAllBtn');
   if (healAllBtn) {
     healAllBtn.addEventListener('click', healAllSurvivors);
   }
 
-  // Initialize game
   if (!localStorage.getItem('survivorPacksGame')) {
     saveGame();
   }
@@ -979,19 +1367,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const savedData = JSON.parse(saved);
       Object.assign(gameState, savedData);
 
-      // Ensure all required settings exist with defaults
       if (!gameState.settings.fontSize) gameState.settings.fontSize = 16;
       if (!gameState.settings.fontFamily) gameState.settings.fontFamily = 'Segoe UI';
       if (gameState.settings.musicEnabled === undefined) gameState.settings.musicEnabled = true;
       if (!gameState.settings.musicVolume || isNaN(gameState.settings.musicVolume)) gameState.settings.musicVolume = 50;
 
-      // Restore expansion card sets to global CARD_SETS
       if (gameState.importedExpansions && gameState.importedExpansions.length > 0) {
         if (!window.CARD_SETS) {
           window.CARD_SETS = {};
         }
         
-        // Re-import each expansion's card data
         gameState.importedExpansions.forEach(expansion => {
           if (expansion.cardSets) {
             Object.keys(expansion.cardSets).forEach(setName => {
@@ -1006,7 +1391,6 @@ document.addEventListener('DOMContentLoaded', () => {
       displayCollection();
     } catch (error) {
       console.error('Error loading save data:', error);
-      // Reset to defaults if save is corrupted
       Object.assign(gameState, defaultGameState);
       saveGame();
     }
@@ -1042,19 +1426,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Pack opening is now handled by displayAvailablePacks()
-
   // Initialize audio
   const musicToggle = document.getElementById('musicToggle');
   const volumeSlider = document.getElementById('volumeSlider');
   const volumeValue = document.getElementById('volumeValue');
 
-  // Ensure valid volume value
   if (!gameState.settings.musicVolume || isNaN(gameState.settings.musicVolume)) {
     gameState.settings.musicVolume = 50;
   }
 
-  // Set initial audio states
   if (musicToggle) {
     musicToggle.checked = gameState.settings.musicEnabled;
   }
@@ -1063,7 +1443,6 @@ document.addEventListener('DOMContentLoaded', () => {
     volumeSlider.value = gameState.settings.musicVolume;
     volumeValue.textContent = `${gameState.settings.musicVolume}%`;
 
-    // Set initial volume safely
     const initialVolume = Math.max(0, Math.min(100, gameState.settings.musicVolume)) / 100;
     backgroundMusic.volume = initialVolume;
   }
@@ -1108,7 +1487,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetExpansions = document.getElementById('resetExpansions');
   const resetGame = document.getElementById('resetGame');
 
-  // Update font size display and apply settings
   if (fontSizeSlider && fontSizeValue) {
     fontSizeSlider.value = gameState.settings.fontSize;
     fontSizeValue.textContent = `${gameState.settings.fontSize}px`;
@@ -1203,130 +1581,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  
-
-  // Initialize powerup grid function (moved outside DOMContentLoaded)
-function initializePowerupGrid() {
-  const grid = document.querySelector('.powerup-grid');
-  if (!grid) return;
-
-    // Add health property to gameState if it doesn't exist
-    if (!gameState.gridHealth) {
-      gameState.gridHealth = Array(25).fill(100);
-    }
-
-    // Add max health property to gameState if it doesn't exist
-    if (!gameState.gridMaxHealth) {
-      gameState.gridMaxHealth = Array(25).fill(100);
-    }
-
-    // Add core health and damage settings to gameState if they don't exist
-    if (!gameState.baseSettings) {
-      gameState.baseSettings = {
-        coreHealth: 100,
-        maxCoreHealth: 100,
-        outermostDamage: 10,
-        outermostStartingHealth: 100
-      };
-    }
-
-    for (let i = 0; i < 25; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'powerup-cell';
-      cell.dataset.index = i;
-
-      // Create health bar
-      const healthBar = document.createElement('div');
-      healthBar.className = 'health-bar';
-      const healthFill = document.createElement('div');
-      healthFill.className = 'health-fill';
-      healthFill.style.width = `${gameState.gridHealth[i]}%`;
-      healthBar.appendChild(healthFill);
-      cell.appendChild(healthBar);
-
-      // Center cell (index 12) is special - the Core
-      if (i === 12) {
-        cell.classList.add('center', 'unlocked');
-        cell.innerHTML = `
-          <div class="core-label">Core</div>
-          <div class="core-health">HP: ${gameState.baseSettings.coreHealth}/${gameState.baseSettings.maxCoreHealth}</div>
-        `;
-
-        // Update health bar for core
-        healthFill.style.width = `${(gameState.baseSettings.coreHealth / gameState.baseSettings.maxCoreHealth) * 100}%`;
-      } else {
-        // Calculate Manhattan distance from center
-        const row = Math.floor(i / 5);
-        const col = i % 5;
-        const centerRow = 2;
-        const centerCol = 2;
-        const distance = Math.abs(row - centerRow) + Math.abs(col - centerCol);
-
-        // Calculate cost based on distance
-        const cost = Math.floor(100 * Math.pow(2, distance - 1));
-        cell.dataset.cost = cost;
-
-        // Check if this is an outermost cell (on the edge of the grid)
-        const isOutermost = row === 0 || row === 4 || col === 0 || col === 4;
-        if (isOutermost) {
-          cell.classList.add('outermost');
-          // Set outermost cells to starting health if not already set
-          if (gameState.gridHealth[i] === 100) {
-            gameState.gridHealth[i] = gameState.baseSettings.outermostStartingHealth;
-          }
-        }
-
-        // Make adjacent cells to unlocked ones available
-        if (distance === 1) {
-          cell.classList.add('available');
-        }
-
-
-      }
-
-      cell.addEventListener('click', () => {
-        if (!cell.classList.contains('available')) return;
-
-        const cost = parseInt(cell.dataset.cost);
-        if (gameState.resources.materials >= cost) {
-          gameState.resources.materials -= cost;
-          cell.classList.remove('available');
-          cell.classList.add('unlocked');
-
-          // Make adjacent cells available
-          window.makeAdjacentCellsAvailable(i);
-
-          updateResourceDisplay();
-          saveGame();
-        } else {
-          alert(`Not enough materials! Need ${cost} materials.`);
-        }
-      });
-
-      cell.addEventListener('mouseover', () => {
-        if (cell.classList.contains('available')) {
-          const costDisplay = document.querySelector('.cost-display');
-          costDisplay.textContent = `Cost: ${cell.dataset.cost} Materials`;
-        }
-      });
-
-      grid.appendChild(cell);
-    }
-
-    // Add upgrade buttons to unlocked cells after all cells are created
-  window.addUpgradeButtons();
-}
-
   // Check for URL parameters to open specific tab
   const urlParams = new URLSearchParams(window.location.search);
   const tabParam = urlParams.get('tab');
 
   if (tabParam && document.querySelector(`[data-tab="${tabParam}"]`)) {
-    // Open the specified tab
     const targetTab = document.querySelector(`[data-tab="${tabParam}"]`);
     targetTab.click();
   } else {
-    // Initialize first tab and subtab
     const firstTab = document.querySelector('.tab-btn');
     if (firstTab) firstTab.click();
   }
@@ -1334,299 +1596,8 @@ function initializePowerupGrid() {
   const firstCardSubtab = document.querySelector('.subtab-btn');
   if (firstCardSubtab) firstCardSubtab.click();
 
-  // Initialize powerup grid
   initializePowerupGrid();
-
-  // Update powerup grid display
   updatePowerupGrid();
-
-  // Display imported expansions
   displayImportedExpansions();
-
-  // Display available packs
   displayAvailablePacks();
 });
-
-function displayAvailablePacks() {
-  const packGrid = document.querySelector('#packs .pack-grid');
-  if (!packGrid) return;
-
-  // Clear existing content
-  packGrid.innerHTML = '';
-
-  // Add classic pack
-  const classicPack = document.createElement('div');
-  classicPack.className = 'pack';
-  classicPack.innerHTML = `
-    <h3>Classic Pack</h3>
-    <p>The original survivor pack set</p>
-    <p class="pack-cost">10 Scraps</p>
-  `;
-
-  classicPack.addEventListener('click', () => {
-    try {
-      const cards = openPackOriginal();
-      showPackResults(cards, 'Classic Pack');
-    } catch (error) {
-      alert(error.message);
-    }
-  });
-
-  packGrid.appendChild(classicPack);
-
-  // Add imported expansion packs
-  if (gameState.importedExpansions && gameState.importedExpansions.length > 0) {
-    gameState.importedExpansions.forEach(expansion => {
-      const expansionPack = document.createElement('div');
-      expansionPack.className = 'pack expansion-pack';
-      expansionPack.innerHTML = `
-        <h3>${expansion.name} Pack</h3>
-        <p>${expansion.description || 'Expansion pack content'}</p>
-        <p class="pack-cost">10 Scraps</p>
-        <p class="expansion-version">v${expansion.version}</p>
-      `;
-
-      expansionPack.addEventListener('click', () => {
-        try {
-          // Get the expansion set name (first key in cardSets)
-          const expansionData = JSON.parse(localStorage.getItem('survivorPacksGame')) || {};
-          if (window.CARD_SETS) {
-            const expansionSetNames = Object.keys(window.CARD_SETS);
-            const setName = expansionSetNames.find(name => name.includes(expansion.name.toLowerCase().replace(/\s+/g, '_'))) || expansionSetNames[0];
-
-            if (setName) {
-              const cards = openPackOriginal(3, setName);
-              showPackResults(cards, `${expansion.name} Pack`);
-            } else {
-              alert('Expansion pack data not found. Try re-importing the expansion.');
-            }
-          } else {
-            alert('No expansion packs are currently loaded.');
-          }
-        } catch (error) {
-          alert(error.message);
-        }
-      });
-
-      packGrid.appendChild(expansionPack);
-    });
-  }
-}
-
-function showPackResults(cards, packName) {
-  const modalDiv = document.createElement('div');
-  modalDiv.className = 'card-details-modal';
-
-  modalDiv.innerHTML = `
-    <div class="modal-content pack-results">
-      <h3>${packName} Opening Results</h3>
-      <div class="pull-results">
-        ${cards.map(card => `
-          <div class="pulled-card" style="border-color: ${card.color}">
-            ${createCardHTML(card)}
-          </div>
-        `).join('')}
-      </div>
-      <div class="modal-buttons">
-        <button class="open-another-pack" ${gameState.resources.scraps < 10 ? 'disabled' : ''}>Open Another Pack (10 Scraps)</button>
-        <button class="close-modal">Continue</button>
-      </div>
-    </div>
-  `;
-
-  const openAnotherBtn = modalDiv.querySelector('.open-another-pack');
-  if (openAnotherBtn) {
-    openAnotherBtn.addEventListener('click', () => {
-      try {
-        if (gameState.resources.scraps < 10) {
-          alert('Not enough scraps to open pack');
-          return;
-        }
-
-        // Determine which pack type to open based on pack name
-        let setName = 'classic';
-        if (packName !== 'Classic Pack') {
-          const expansionName = packName.replace(' Pack', '');
-          if (window.CARD_SETS) {
-            const expansionSetNames = Object.keys(window.CARD_SETS);
-            setName = expansionSetNames.find(name => name.includes(expansionName.toLowerCase().replace(/\s+/g, '_'))) || expansionSetNames[0] || 'classic';
-          }
-        }
-
-        const newCards = openPackOriginal(3, setName);
-
-        // Update the cards display in the current modal
-        const pullResults = modalDiv.querySelector('.pull-results');
-        if (pullResults) {
-          pullResults.innerHTML = newCards.map(card => `
-            <div class="pulled-card" style="border-color: ${card.color}">
-              ${createCardHTML(card)}
-            </div>
-          `).join('');
-        }
-
-        // Update the Open Another Pack button state
-        openAnotherBtn.disabled = gameState.resources.scraps < 10;
-
-        updateResourceDisplay();
-        displayCollection();
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-  }
-
-  document.body.appendChild(modalDiv);
-
-  const closeButton = modalDiv.querySelector('.close-modal');
-  closeButton.addEventListener('click', () => {
-    document.body.removeChild(modalDiv);
-  });
-
-  modalDiv.addEventListener('click', (e) => {
-    if (e.target === modalDiv) {
-      document.body.removeChild(modalDiv);
-    }
-  });
-
-  updateResourceDisplay();
-  displayCollection();
-}
-
-function initializeGame() {
-  const survivors = [
-    { name: 'Sarah Chen', occupation: 'Doctor', stats: { health: 100, str: 40, dex: 60, int: 80, ep: 5 }, rarity: 'common' },
-    { name: 'Jackson Williams', occupation: 'Engineer', stats: { health: 100, str: 70, dex: 50, int: 60, ep: 6 }, rarity: 'common' },
-    { name: 'Emily Davis', occupation: 'Teacher', stats: { health: 100, str: 50, dex: 70, int: 70, ep: 7 }, rarity: 'common' },
-    { name: 'David Rodriguez', occupation: 'Farmer', stats: { health: 100, str: 80, dex: 40, int: 50, ep: 5 }, rarity: 'common' },
-    { name: 'Olivia Brown', occupation: 'Nurse', stats: { health: 100, str: 45, dex: 65, int: 85, ep: 8 }, rarity: 'rare' },
-    { name: 'Ethan Garcia', occupation: 'Electrician', stats: { health: 100, str: 75, dex: 55, int: 65, ep: 7 }, rarity: 'rare' },
-    { name: 'Sophia Martinez', occupation: 'Librarian', stats: { health: 100, str: 55, dex: 75, int: 75, ep: 9 }, rarity: 'rare' },
-    { name: 'Noah Anderson', occupation: 'Construction Worker', stats: { health: 100, str: 85, dex: 45, int: 55, ep: 6 }, rarity: 'rare' },
-    { name: 'Isabella Thomas', occupation: 'Paramedic', stats: { health: 100, str: 50, dex: 70, int: 90, ep: 10 }, rarity: 'epic' },
-    { name: 'Liam Jackson', occupation: 'Mechanic', stats: { health: 100, str: 80, dex: 50, int: 60, ep: 8 }, rarity: 'epic' },
-    { name: 'Mia White', occupation: 'Journalist', stats: { health: 100, str: 60, dex: 80, int: 80, ep: 10 }, rarity: 'epic' },
-    { name: 'Aiden Harris', occupation: 'Security Guard', stats: { health: 100, str: 90, dex: 50, int: 60, ep: 7 }, rarity: 'epic' },
-    { name: 'Abigail Martin', occupation: 'Scientist', stats: { health: 100, str: 55, dex: 75, int: 95, ep: 12 }, rarity: 'legendary' },
-    { name: 'Carter Thompson', occupation: 'Detective', stats: { health: 100, str: 85, dex: 65, int: 75, ep: 10 }, rarity: 'legendary' },
-    { name: 'Chloe Garcia', occupation: 'Chef', stats: { health: 100, str: 65, dex: 85, int: 85, ep: 12 }, rarity: 'legendary' },
-    { name: 'JamesWilson', occupation: 'Firefighter', stats: { health: 100, str: 95, dex: 55, int: 65, ep: 9 }, rarity: 'legendary' },
-    { name: 'Madison Moore', occupation: 'Astronaut', stats: { health: 100, str: 60, dex: 80, int: 100, ep: 15 }, rarity: 'mythic' },
-    { name: 'Lucas Taylor', occupation: 'Pilot', stats: { health: 100, str: 90, dex: 70, int: 80, ep: 13 }, rarity: 'mythic' },
-    { name: 'Ella Anderson', occupation: 'President', stats: { health: 100, str: 70, dex: 90, int: 90, ep: 15 }, rarity: 'mythic' },
-    { name: 'Owen Wright', occupation: 'General', stats: { health: 100, str: 100, dex: 60, int: 70, ep: 12 }, rarity: 'mythic' },
-    { name: 'Scarlett Green', occupation: 'God', stats: { health: 100, str: 100, dex: 100, int: 100, ep: 20 }, rarity: 'unique' },
-  ];
-
-  const items = [
-    { name: 'First Aid Kit', resourceType: 'meds', resourceValue: 10, rarity: 'common' },
-    { name: 'Canned Food', resourceType: 'food', resourceValue: 10, rarity: 'common' },
-    { name: 'Bottled Water', resourceType: 'water', resourceValue: 10, rarity: 'common' },
-    { name: 'Scrap Metal', resourceType: 'scraps', resourceValue: 10, rarity: 'common' },
-    { name: 'Medical Supplies', resourceType: 'meds', resourceValue: 25, rarity: 'rare' },
-    { name: 'Survival Ration', resourceType: 'food', resourceValue: 25, rarity: 'rare' },
-    { name: 'Purified Water', resourceType: 'water', resourceValue: 25, rarity: 'rare' },
-    { name: 'Tool Set', resourceType: 'scraps', resourceValue: 25, rarity: 'rare' },
-    { name: 'Advanced Medkit', resourceType: 'meds', resourceValue: 50, rarity: 'epic' },
-    { name: 'Emergency Food', resourceType: 'food', resourceValue: 50, rarity: 'epic' },
-    { name: 'Water Filter', resourceType: 'water', resourceValue: 50, rarity: 'epic' },
-    { name: 'Material Cache', resourceType: 'materials', resourceValue: 50, rarity: 'epic' },
-    { name: 'Miracle Drug', resourceType: 'meds', resourceValue: 100, rarity: 'legendary' },
-    { name: 'Nutrient Paste', resourceType: 'food', resourceValue: 100, rarity: 'legendary' },
-    { name: 'Endless Spring', resourceType: 'water', resourceValue: 100, rarity: 'legendary' },
-    { name: 'Unobtanium', resourceType: 'materials', resourceValue: 100, rarity: 'legendary' },
-  ];
-
-  const locations = [
-    { name: 'Abandoned Hospital', requirements: { ep: 15 }, rewards: { meds: 50, scraps: 25 }, rarity: 'common' },
-    { name: 'Desolate Supermarket', requirements: { ep: 15 }, rewards: { food: 50, water: 25 }, rarity: 'common' },
-    { name: 'Ruined Factory', requirements: { ep: 15 }, rewards: { scraps: 50, materials: 25 }, rarity: 'common' },
-    { name: 'Hidden Clinic', requirements: { ep: 20 }, rewards: { meds: 75, scraps: 40 }, rarity: 'rare' },
-    { name: 'Fortified Farm', requirements: { ep: 20 }, rewards: { food: 75, water: 40 }, rarity: 'rare' },
-    { name: 'Secret Workshop', requirements: { ep: 20 }, rewards: { scraps: 75, materials: 40 }, rarity: 'rare' },
-    { name: 'Underground Lab', requirements: { ep: 25 }, rewards: { meds: 100, scraps: 60, materials: 30 }, rarity: 'epic' },
-    { name: 'Secluded Oasis', requirements: { ep: 25 }, rewards: { food: 60, water: 100, scraps: 30 }, rarity: 'epic' },
-    { name: 'Government Bunker', requirements: { ep: 30 }, rewards: { meds: 125, food: 125, water: 125, scraps: 75, materials: 50 }, rarity: 'legendary' },
-    { name: 'Atlantis', requirements: { ep: 35 }, rewards: { meds: 200, food: 200, water: 200, scraps: 100, materials: 100 }, rarity: 'mythic' },
-  ];
-
-  const pack = {
-    unique: 0.1,
-    mythic: 0.4,
-    legendary: 1.5,
-    epic: 5,
-    rare: 13,
-    common: 80
-  };
-
-  const weightedCategories = [];
-  for (let i = 0; i < 60; i++) weightedCategories.push('survivors');
-  for (let i = 0; i < 30; i++) weightedCategories.push('items');
-  for (let i = 0; i < 10; i++) weightedCategories.push('locations');
-
-  const pulled = [];
-
-  for (let i = 0; i < 5; i++) {
-    let rarityRoll = Math.random() * 100;
-    let rarity;
-    for (const [packRarity, threshold] of Object.entries(pack)) {
-      if (rarityRoll <= threshold) {
-        rarity = packRarity;
-        break;
-      }
-      rarityRoll -= threshold;
-    }
-
-    const category = weightedCategories[Math.floor(Math.random() * weightedCategories.length)];
-
-    let cardName;
-    let card;
-    switch (category) {
-      case 'survivors':
-        const weightedSurvivors = survivors.filter(survivor => survivor.rarity === rarity);
-        cardName = weightedSurvivors[Math.floor(Math.random() * weightedSurvivors.length)].name;
-        card = {
-          id: generateUniqueId(),
-          name: cardName,
-          category,
-          rarity,
-          color: RARITY_CONFIG[rarity].color
-        };
-        Object.assign(card, survivors.find(survivor => survivor.name === cardName));
-        break;
-      case 'items':
-        const weightedItems = items.filter(item => item.rarity === rarity);
-        cardName = weightedItems[Math.floor(Math.random() * weightedItems.length)].name;
-        card = {
-          id: generateUniqueId(),
-          name: cardName,
-          category,
-          rarity,
-          color: RARITY_CONFIG[rarity].color
-        };
-        Object.assign(card, items.find(item => item.name === cardName));
-        break;
-      case 'locations':
-        const weightedLocations = locations.filter(location => location.rarity === rarity);
-        cardName = weightedLocations[Math.floor(Math.random() * weightedLocations.length)].name;
-        card = {
-          id: generateUniqueId(),
-          name: cardName,
-          category,
-          rarity,
-          color: RARITY_CONFIG[rarity].color
-        };
-        Object.assign(card, locations.find(location => location.name === cardName));
-        break;
-    }
-
-    pulled.push(card);
-  }
-
-  gameState.resources.scraps = Math.max(0, gameState.resources.scraps - 10);
-  return pulled;
-}
-
-const openPack = () => {
-  return initializeGame();
-};
