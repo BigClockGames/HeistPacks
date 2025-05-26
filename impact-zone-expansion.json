@@ -1,0 +1,85 @@
+
+{
+  "name": "Impact Zone",
+  "version": "1.0.0",
+  "description": "The Impact Zone expansion introduces post-apocalyptic military specialists and dangerous new locations in the contaminated zones.",
+  "cardSets": {
+    "impact_zone": {
+      "name": "Impact Zone Set",
+      "description": "Military survivors and contaminated locations from the impact zones",
+      "items": {
+        "common": ["Radiation Detector", "Military Rations", "Purification Tablets", "Steel Scrap"],
+        "rare": ["Hazmat Suit", "Combat Medkit", "Field Radio", "Tactical Gear"],
+        "epic": ["Power Armor Fragment", "Advanced Scanner", "Military Grade Supplies"],
+        "legendary": ["Prototype Tech", "Elite Equipment"],
+        "mythic": ["Experimental Arsenal"],
+        "unique": ["Command Center Access"]
+      },
+      "survivors": {
+        "common": [
+          { "name": "Sergeant Davis", "occupation": "Infantry", "str": 6, "dex": 4, "int": 3, "health": 100 },
+          { "name": "Medic Torres", "occupation": "Field Medic", "str": 3, "dex": 5, "int": 6, "health": 100 },
+          { "name": "Scout Reyes", "occupation": "Reconnaissance", "str": 4, "dex": 7, "int": 4, "health": 100 }
+        ],
+        "rare": [
+          { "name": "Captain Morrison", "occupation": "Tactical Officer", "str": 7, "dex": 6, "int": 7, "health": 100 },
+          { "name": "Engineer Vale", "occupation": "Combat Engineer", "str": 6, "dex": 5, "int": 8, "health": 100 },
+          { "name": "Specialist Quinn", "occupation": "Hazmat Expert", "str": 5, "dex": 7, "int": 7, "health": 100 }
+        ],
+        "epic": [
+          { "name": "Major Steel", "occupation": "Special Forces", "str": 9, "dex": 8, "int": 6, "health": 100 },
+          { "name": "Dr. Cross", "occupation": "Field Scientist", "str": 5, "dex": 7, "int": 10, "health": 100 }
+        ],
+        "legendary": [
+          { "name": "Colonel Phoenix", "occupation": "Elite Commander", "str": 10, "dex": 9, "int": 9, "health": 100 }
+        ],
+        "mythic": [
+          { "name": "General Storm", "occupation": "War Hero", "str": 12, "dex": 10, "int": 11, "health": 100 }
+        ],
+        "unique": []
+      },
+      "locations": {
+        "common": [
+          {
+            "name": "Abandoned Checkpoint",
+            "requirements": { "ep": 3, "food": 2, "water": 2 },
+            "rewards": { "scraps": 15, "materials": 8 }
+          },
+          {
+            "name": "Crashed Transport",
+            "requirements": { "ep": 4, "food": 3, "water": 2 },
+            "rewards": { "materials": 12, "meds": 8 }
+          }
+        ],
+        "rare": [
+          {
+            "name": "Military Outpost",
+            "requirements": { "ep": 6, "food": 5, "water": 5, "meds": 2 },
+            "rewards": { "materials": 20, "scraps": 15, "meds": 10 }
+          },
+          {
+            "name": "Contaminated Lab",
+            "requirements": { "ep": 7, "food": 4, "water": 4, "meds": 3 },
+            "rewards": { "meds": 25, "materials": 15 }
+          }
+        ],
+        "epic": [
+          {
+            "name": "Impact Crater",
+            "requirements": { "ep": 10, "food": 8, "water": 8, "meds": 5 },
+            "rewards": { "materials": 50, "scraps": 40, "meds": 30 }
+          }
+        ],
+        "legendary": [
+          {
+            "name": "Command Bunker",
+            "requirements": { "ep": 15, "food": 12, "water": 12, "meds": 8 },
+            "rewards": { "materials": 100, "scraps": 80, "meds": 60, "food": 50, "water": 50 }
+          }
+        ],
+        "mythic": [],
+        "unique": []
+      }
+    }
+  }
+}
