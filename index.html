@@ -1,66 +1,118 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>HeistPacks</title>
+  <meta name="viewport" content="width=device-width">
+  <title>SurvivorPacks</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="game-container">
-    <nav class="main-nav">
-      <div class="nav-tabs">
-        <button onclick="showCollection()" class="tab-btn" data-label="COLLECTION">
-          <span class="tab-icon">📚</span>
-          <span class="tab-text">COLLECTION</span>
-        </button>
-        <button onclick="showHeistSetup()" class="tab-btn" data-label="HEIST">
-          <span class="tab-icon">💰</span>
-          <span class="tab-text">HEIST</span>
-        </button>
-        <button onclick="showPackSelection()" class="tab-btn" data-label="PACKS">
-          <span class="tab-icon">🎴</span>
-          <span class="tab-text">PACKS</span>
-        </button>
-        <button onclick="showBlackMarket()" class="tab-btn" data-label="BLACK MARKET" id="black-market-tab" style="display: none;">
-          <span class="tab-icon">🦹</span>
-          <span class="tab-text">BLACK MARKET</span>
-        </button>
-        <button onclick="showHome()" class="tab-btn" data-label="HOME">
-          <span class="tab-icon">🏠</span>
-          <span class="tab-text">HOME</span>
-        </button>
-        <button onclick="showHelp()" class="tab-btn" data-label="HELP">
-          <span class="tab-icon">❓</span>
-          <span class="tab-text">HELP</span>
-        </button>
-        <button onclick="showSettings()" class="tab-btn" data-label="SETTINGS">
-          <span class="tab-icon">⚙️</span>
-          <span class="tab-text">SETTINGS</span>
-        </button>
-        <button onclick="showSupport()" class="tab-btn" data-label="SUPPORT">
-          <span class="tab-icon">💝</span>
-          <span class="tab-text">SUPPORT</span>
-        </button>
+    <header class="fixed-header">
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="cards">Cards</button>
+        <button class="tab-btn" data-tab="packs">Packs</button>
+        <button class="tab-btn" data-tab="base">Base</button>
+        <button class="tab-btn" data-tab="settings">Settings</button>
+      </nav>
+      <div class="resources-bar">
+        <div class="resource"><span>Scraps:</span> 0</div>
+        <div class="resource"><span>Food:</span> 0</div>
+        <div class="resource"><span>Water:</span> 0</div>
+        <div class="resource"><span>Meds:</span> 0</div>
+        <div class="resource"><span>Materials:</span> 0</div>
+        <button id="healAllBtn" class="heal-all-btn">Heal All</button>
+        <div class="timer-display">
+          <span>Next Update:</span> <span id="timer-countdown">60s</span>
+          <span class="depletion-preview" id="depletion-preview"></span>
+        </div>
       </div>
-      <div class="hud-stats">
-        <div id="xp-display"></div>
-        <div id="cash">$0</div>
-        <div id="drugs" style="display: none">💊 0</div>
-        <div id="cigs" style="display: none">🚬 0</div>
-      </div>
-    </nav>
+    </header>
 
-    <div id="gameArea"></div>
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <h2 id="modal-title"></h2>
-        <p id="modal-text"></p>
-        <div id="modal-buttons"></div>
+    <main>
+      <div id="cards" class="tab-content active">
+        <h2>Card Collection</h2>
+        <div class="card-subtabs">
+          <button class="subtab-btn active" data-subtab="survivors">Survivors</button>
+          <button class="subtab-btn" data-subtab="items">Items</button>
+          <button class="subtab-btn" data-subtab="locations">Locations</button>
+        </div>
+        <div id="survivors" class="subtab-content active">
+          <div class="card-grid"></div>
+        </div>
+        <div id="items" class="subtab-content">
+          <div class="card-grid"></div>
+        </div>
+        <div id="locations" class="subtab-content">
+          <div class="card-grid"></div>
+        </div>
       </div>
-    </div>
+
+      <div id="packs" class="tab-content">
+        <h2>Available Packs</h2>
+        <div class="pack-grid">
+          <!-- Packs will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <div id="base" class="tab-content">
+        <h2>Base Management</h2>
+        <div class="powerup-grid">
+          <!-- Grid will be populated by JavaScript -->
+        </div>
+        <div class="powerup-info">
+          <p>Select a power-up to unlock</p>
+          <p class="cost-display"></p>
+        </div>
+      </div>
+
+      <div id="settings" class="tab-content">
+        <h2>Settings</h2>
+        <div class="settings-container">
+          <div class="setting-item">
+            <label>Font Size</label>
+            <input type="range" min="12" max="24" value="16" id="fontSizeSlider">
+            <span id="fontSizeValue">16px</span>
+          </div>
+          <div class="setting-item">
+            <label>Font Family</label>
+            <select id="fontSelect">
+              <option value="Segoe UI">Segoe UI</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Open Sans">Open Sans</option>
+              <option value="Montserrat">Montserrat</option>
+              <option value="Raleway">Raleway</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <h3>Audio Settings</h3>
+            <div class="audio-controls">
+              <label>
+                <input type="checkbox" id="musicToggle" checked> Background Music
+              </label>
+              <label>Volume: <span id="volumeValue">50%</span></label>
+              <input type="range" id="volumeSlider" min="0" max="100" value="50">
+            </div>
+          </div>
+          <div class="setting-item">
+            <h3>Save Management</h3>
+            <button id="importExpansion" class="setting-btn">Import Expansion Pack</button>
+            <input type="file" id="expansionInput" style="display: none" accept=".json">
+            <button id="resetExpansions" class="setting-btn danger">Reset All Expansions</button>
+            <button id="exportSave" class="setting-btn">Export Save</button>
+            <button id="importSave" class="setting-btn">Import Save</button>
+            <button id="resetGame" class="setting-btn danger">Reset Game</button>
+            <input type="file" id="importInput" style="display: none" accept=".json">
+          </div>
+          <div class="setting-item">
+            <h3>Expansion Packs</h3>
+            <div id="importedExpansions" class="imported-expansions"></div>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
